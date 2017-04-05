@@ -1,0 +1,17 @@
+D:\Projects\Tutorial\Tutorial\bin\Debug\Tutorial.exe.config
+D:\Projects\Tutorial\Tutorial\bin\Debug\Tutorial.exe
+D:\Projects\Tutorial\Tutorial\bin\Debug\Tutorial.pdb
+D:\Projects\Tutorial\Tutorial\obj\Debug\Tutorial.csprojResolveAssemblyReference.cache
+D:\Projects\Tutorial\Tutorial\obj\Debug\Tutorial.Properties.Resources.resources
+D:\Projects\Tutorial\Tutorial\obj\Debug\Tutorial.csproj.GenerateResource.Cache
+D:\Projects\Tutorial\Tutorial\obj\Debug\Tutorial.exe
+D:\Projects\Tutorial\Tutorial\obj\Debug\Tutorial.pdb
+D:\Projects\Tutorial\Tutorial\obj\Debug\Tutorial.Main.resources
+D:\Projects\Tutorial\Tutorial\obj\Debug\Interop.MediaPlayer.dll
+D:\Projects\Tutorial\Tutorial\obj\Debug\Tutorial.csproj.ResolveComReference.cache
+D:\Projects\Tutorial\Tutorial\bin\Debug\Interop.MediaPlayer.dll
+D:\Projects\Tutorial\Tutorial\obj\Debug\Tutorial.Option.resources
+D:\Projects\Tutorial\Tutorial\obj\Debug\Tutorial.NewFile.resources
+D:\Projects\Tutorial\Tutorial\bin\Debug\Newtonsoft.Json.dll
+D:\Projects\Tutorial\Tutorial\bin\Debug\Newtonsoft.Json.xml
+D:\Projects\Tutorial\Tutorial\bin\Debug\Microsoft.WindowsAPICodePack.dll
