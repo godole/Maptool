@@ -14,14 +14,14 @@ namespace MapTool
         public Fever() : base("fever")
         {
             ObjectName = "fever";
-            Judge = new ObjectJudge(this, ObjectName, Size.y / 2);
+            Judge = new ObjectJudge(this, ObjectName, 0);
         }
 
         public Fever(NormalObjectlData data) :
             base(data)
         {
             ObjectName = "fever";
-            Judge = new ObjectJudge(this, ObjectName, Size.y / 2);
+            Judge = new ObjectJudge(this, ObjectName, 0);
         }
     }
 }

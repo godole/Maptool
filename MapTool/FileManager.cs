@@ -35,6 +35,7 @@ namespace MapTool
             SoundManager.AddSound("rope", rootpath + @"\sound\rope.mp3");
             SoundManager.AddSound("fever", rootpath + @"\sound\fever.mp3");
             SoundManager.AddSound("spring", rootpath + @"\sound\spring.mp3");
+            SoundManager.AddSound("jump", rootpath + @"\sound\jump.mp3");
         }
 
         public void Save()
@@ -123,6 +124,7 @@ namespace MapTool
             SaveSound("spring", rootpath + @"\sound\");
             SaveSound("double", rootpath + @"\sound\");
             SaveSound("rope", rootpath + @"\sound\");
+            SaveSound("jump", rootpath + @"\sound\");
 
             FileInfo fi = new FileInfo(SoundManager.GetBackgroundFilePath());
 
@@ -163,20 +165,21 @@ namespace MapTool
 
         void LoadResource(string rootpath)
         {
-            ImageManager.AddBitmap("background", new Bitmap(rootpath + @"\theme\background.png"));
-            ImageManager.AddBitmap("ground", new Bitmap(rootpath + @"\theme\ground.png"));
+            ImageManager.ChangeBitmap("background", new Bitmap(rootpath + @"\theme\background.png"));
+            ImageManager.ChangeBitmap("ground", new Bitmap(rootpath + @"\theme\ground.png"));
 
-            ImageManager.AddBitmap("platform", new Bitmap(rootpath + @"\obj\platform.png"));
-            ImageManager.AddBitmap("double", new Bitmap(rootpath + @"\obj\double.png"));
-            ImageManager.AddBitmap("fever", new Bitmap(rootpath + @"\obj\fever.png"));
-            ImageManager.AddBitmap("niddle", new Bitmap(rootpath + @"\obj\niddle.png"));
-            ImageManager.AddBitmap("rope", new Bitmap(rootpath + @"\obj\rope.png"));
-            ImageManager.AddBitmap("spring", new Bitmap(rootpath + @"\obj\spring.png"));
+            ImageManager.ChangeBitmap("platform", new Bitmap(rootpath + @"\obj\platform.png"));
+            ImageManager.ChangeBitmap("double", new Bitmap(rootpath + @"\obj\double.png"));
+            ImageManager.ChangeBitmap("fever", new Bitmap(rootpath + @"\obj\fever.png"));
+            ImageManager.ChangeBitmap("niddle", new Bitmap(rootpath + @"\obj\niddle.png"));
+            ImageManager.ChangeBitmap("rope", new Bitmap(rootpath + @"\obj\rope.png"));
+            ImageManager.ChangeBitmap("spring", new Bitmap(rootpath + @"\obj\spring.png"));
 
             SoundManager.AddSound("double", rootpath + @"\sound\double.mp3");
             SoundManager.AddSound("rope", rootpath + @"\sound\rope.mp3");
             SoundManager.AddSound("fever", rootpath + @"\sound\fever.mp3");
             SoundManager.AddSound("spring", rootpath + @"\sound\spring.mp3");
+            SoundManager.AddSound("jump", rootpath + @"\sound\jump.mp3");
             SoundManager.SetBackground(rootpath + @"\sound\background.mp3");
         }
 

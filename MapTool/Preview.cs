@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MapTool
@@ -18,10 +19,14 @@ namespace MapTool
         long m_CurTime = 0;
         float m_StartTime = 0;
         long m_DeltaTime;
+
         Stopwatch m_StopWatch;
+        Thread _UpdateThread;
 
         int m_ScreenSize;
         double m_Speed;
+
+        int _Metronome = 1;
 
         //정렬되있어야됨
         //speed = pixel per second
@@ -30,6 +35,7 @@ namespace MapTool
             IsPlay = false;
             m_ScreenSize = scrsize;
             m_StopWatch = new Stopwatch();
+            _UpdateThread = new Thread(PreviewUpdate);
         }
 
         public void PlayPreview(List<IPreview> previewObject, float starttime, int startpos, double speed)
@@ -50,32 +56,56 @@ namespace MapTool
                 }
             }
 
-            m_StopWatch.Start();
+            switch(_UpdateThread.ThreadState)
+            {
+                case System.Threading.ThreadState.Unstarted:
+                    _UpdateThread.Start();
+                    break;
+
+                case System.Threading.ThreadState.Aborted:
+                    _UpdateThread = new Thread(PreviewUpdate);
+                    _UpdateThread.Start();
+                    break;
+            }
         }
 
         public void PreviewUpdate()
         {
-            m_DeltaTime = m_StopWatch.ElapsedMilliseconds;
-            Time.deltaTime = m_DeltaTime;
-            m_StopWatch.Reset();
-
-            for (int i = 0; i < m_Objects.Count; i++)
-            {
-                m_Objects[i].PlaySound(m_CurTime);
-
-                if(m_Objects[i].IsPlayed)
-                    m_Objects.Remove(m_Objects[i]);
-            }
-            
-            m_CurTime += m_DeltaTime;
-            LineX += m_DeltaTime * m_Speed / 1000;
-
             m_StopWatch.Start();
+
+            while (true)
+            {
+                Program.MainForm.ObjectPanel.Invalidate();
+                m_DeltaTime = m_StopWatch.ElapsedMilliseconds;
+
+                Time.deltaTime = m_DeltaTime;
+
+                for (int i = 0; i < m_Objects.Count; i++)
+                {
+                    if (!m_Objects[i].IsPlayed)
+                        m_Objects[i].PlaySound(m_DeltaTime);
+                }
+
+                /*if (_Metronome * Program.MainMap.LineInterval.x < Program.MainMap.PlayerMoveSpeed * m_DeltaTime / 1000)
+                {
+                    _Metronome++;
+                    SoundManager.Play("spring");
+                }*/
+
+                LineX = m_DeltaTime * m_Speed / 1000;
+            }
         }
 
         public void Stop()
         {
+            _UpdateThread.Abort();
             IsPlay = false;
+            foreach (var obj in m_Objects)
+                obj.IsPlayed = false;
+            m_CurObjIndex = 0;
+            m_CurTime = 0;
+            m_StartTime = 0;
+            _Metronome = 0;
             m_StopWatch.Reset();
         }
 

@@ -29,8 +29,9 @@ namespace MapTool
         {
             ObjectName = "spring"; 
             m_CenterImage = new Image("spring");
-            m_CenterImage.Size = new Vector2(100, 100);
-            Judge = new ObjectJudge(this, ObjectName, 100 / 2);
+            m_CenterImage.Size = new Vector2(100, m_CenterImage.Size.y / m_CenterImage.Size.x * 100);
+            Size = new Vector2(100, m_CenterImage.Size.y);
+            Judge = new ObjectJudge(this, ObjectName, 0);
             m_Images = new List<Image>();
             m_Images.Add(m_CenterImage);
             AddChild(m_CenterImage);
@@ -40,8 +41,9 @@ namespace MapTool
         {
             ObjectName = "spring";
             m_CenterImage = new Image("spring");
-            m_CenterImage.Size = new Vector2(100, 100);
-            Judge = new ObjectJudge(this, ObjectName, 100 / 2);
+            m_CenterImage.Size = new Vector2(100, m_CenterImage.Size.y / m_CenterImage.Size.x * 100);
+            Size = new MapTool.Vector2(100, m_CenterImage.Size.y);
+            Judge = new ObjectJudge(this, ObjectName, 0);
             m_Images = new List<Image>();
             m_Images.Add(m_CenterImage);
             AddChild(m_CenterImage);
@@ -148,7 +150,7 @@ namespace MapTool
             Vector2 p = new Vector2(e.Location);
             if(m_IsUpStart)
             {
-                if (e.Y < m_Images[1].WorldPosition.y - (int)Program.MainMap.LineInterval.y)
+                if (e.Y < m_Images[1].WorldPosition.y - (int)Program.MainMap.LineInterval.y / 2)
                     m_SizeCount++;
                 else if (e.Y > m_Images[1].WorldPosition.y && m_SizeCount > 1)
                     m_SizeCount--;
@@ -156,19 +158,19 @@ namespace MapTool
 
             else
             {
-                if (e.Y > m_Images[1].WorldPosition.y + (int)Program.MainMap.LineInterval.y)
+                if (e.Y > m_Images[1].WorldPosition.y + (int)Program.MainMap.LineInterval.y / 2)
                     m_SizeCount++;
                 else if (e.Y < m_Images[1].WorldPosition.y && m_SizeCount > 1)
                     m_SizeCount--;
             }
             for(int i = 0; i < m_Images.Count; i++)
             {
-                m_Images[i].Position.x = m_CenterImage.Position.x + (i * (int)Program.MainMap.LineInterval.x * m_SizeCount);
+                m_Images[i].Position.x = m_CenterImage.Position.x + (i * (int)Program.MainMap.LineInterval.x / 2 * m_SizeCount);
 
                 if (i % 2 == 0)
                     continue;
 
-                m_Images[i].Position.y = m_CenterImage.Position.y + ((int)Program.MainMap.LineInterval.y * (m_IsUpStart ? -1 : 1)) * m_SizeCount;
+                m_Images[i].Position.y = m_CenterImage.Position.y + ((int)Program.MainMap.LineInterval.y / 2 * (m_IsUpStart ? -1 : 1)) * m_SizeCount;
             }
         }
 
@@ -177,7 +179,7 @@ namespace MapTool
             double pos = Program.MainMap.PlayerMoveSpeed * curtime / 1000;
             Vector2 deltaPos = m_Images[m_CurPrevIndex].Position + Position;
 
-            if (pos > deltaPos.x + m_Images[m_CurPrevIndex].Size.x / 2)
+            if (pos > deltaPos.x)
             {
                 m_CurPrevIndex++;
                 SoundManager.Play(ObjectName);
@@ -216,10 +218,10 @@ namespace MapTool
         {
             var lastImage = m_Images[m_Images.Count - 1];
             Image img = new Image("spring");
-            img.Position.x = lastImage.Position.x + ((int)Program.MainMap.LineInterval.x * m_SizeCount);
-            int ydelta = (m_Images.Count % 2 == (m_IsUpStart ? 1 : 0) ? (int)Program.MainMap.LineInterval.y : -(int)Program.MainMap.LineInterval.y) * m_SizeCount;
+            img.Position.x = lastImage.Position.x + ((int)Program.MainMap.LineInterval.x / 2 * m_SizeCount);
+            int ydelta = (m_Images.Count % 2 == (m_IsUpStart ? 1 : 0) ? (int)Program.MainMap.LineInterval.y : -(int)Program.MainMap.LineInterval.y) / 2 * m_SizeCount;
             img.Position.y = lastImage.Position.y - ydelta;
-            img.Size = new Vector2(100, 100);
+            img.Size = m_CenterImage.Size;
             m_Images.Add(img);
             AddChild(img);
         }
@@ -251,7 +253,7 @@ namespace MapTool
                     r.Y = (int)(m_Images[1].WorldPosition.y - m_Images[0].Size.y);
                 else
                     r.Y = (int)(m_Images[0].WorldPosition.y + m_Images[0].Size.y);
-                r.Width = (int)(m_Images[0].Size.x + (m_Images.Count - 1) * Program.MainMap.LineInterval.x);
+                r.Width = (int)(m_Images[0].Size.x + (m_Images.Count - 1) * Program.MainMap.LineInterval.x / 2);
                 r.Height = (int)m_CenterImage.Size.y;
 
                 return r;

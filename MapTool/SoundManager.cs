@@ -88,9 +88,6 @@ namespace MapTool
 
         public static void Play(string tag)
         {
-            if (tag == null)
-                return;
-
             if(Instance.m_Sounds.ContainsKey(tag))
             {
                 if(Instance.m_Sounds[tag].PlayState == MPPlayStateConstants.mpPlaying)

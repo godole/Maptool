@@ -32,9 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.LoadTheme = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.파일ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,9 +109,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button4);
-            this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.LoadTheme);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
@@ -122,44 +116,18 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(78, 78);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(77, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "바닥";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(6, 78);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(66, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "배경";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(6, 49);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(149, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "테마 저장하기";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
             // LoadTheme
             // 
+            this.LoadTheme.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LoadTheme.Location = new System.Drawing.Point(6, 20);
             this.LoadTheme.Name = "LoadTheme";
-            this.LoadTheme.Size = new System.Drawing.Size(149, 23);
+            this.LoadTheme.Size = new System.Drawing.Size(149, 88);
             this.LoadTheme.TabIndex = 0;
             this.LoadTheme.Text = "테마 불러오기";
             this.LoadTheme.UseVisualStyleBackColor = true;
-            this.LoadTheme.Click += new System.EventHandler(this.Btn_Load_Click);
+            this.LoadTheme.Click += new System.EventHandler(this.LoadTheme_Click);
             // 
             // menuStrip1
             // 
@@ -813,9 +781,6 @@
         #endregion
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button LoadTheme;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 파일ToolStripMenuItem;

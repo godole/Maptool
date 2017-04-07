@@ -14,14 +14,14 @@ namespace MapTool
         public Double() : base("double")
         {
             ObjectName = "double";
-            Judge = new ObjectJudge(this, ObjectName, Size.y / 2);
+            Judge = new ObjectJudge(this, ObjectName, 0);
         }
 
         public Double(NormalObjectlData data) :
             base(data)
         {
             ObjectName = "double";
-            Judge = new ObjectJudge(this, ObjectName, Size.y / 2);
+            Judge = new ObjectJudge(this, ObjectName, 0);
         }
     }
 }

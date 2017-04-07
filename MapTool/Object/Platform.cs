@@ -9,18 +9,34 @@ using System.Windows.Forms;
 namespace MapTool
 {
     class Platform :
-        NormalObject
+        TiledObject
     {
-        public Platform() :
-            base("platform")
-        {
-            Judge = new ObjectJudge(this, "platform", -Program.MainMap.LineInterval.x + Size.x / 2);
-        }
-
-        public Platform(NormalObjectlData data) :
-            base(data)
+        public Platform()
         {
             ObjectName = "platform";
+            m_CenterImage = new Image(ObjectName);
+            m_CenterImage.Size = new Vector2(100, m_CenterImage.Size.y / m_CenterImage.Size.x * 100);
+            Size = m_CenterImage.Size;
+            AddChild(m_CenterImage);
+
+            m_Images = new List<Image>();
+            m_Images.Add(m_CenterImage);
+
+            Judge = new ObjectJudge(this, "jump", -Program.MainMap.LineInterval.x);
+        }
+
+        public Platform(NormalObjectlData data)
+        {
+            ObjectName = "platform";
+            m_CenterImage = new Image(ObjectName);
+            m_CenterImage.Size = new Vector2(100, m_CenterImage.Size.y / m_CenterImage.Size.x * 100);
+            Size = m_CenterImage.Size;
+            AddChild(m_CenterImage);
+
+            m_Images = new List<Image>();
+            m_Images.Add(m_CenterImage);
+
+            Position = new Vector2(data.PositionX, data.PositionY);
         }
 
         public override void Release()
@@ -62,6 +78,20 @@ namespace MapTool
             pos.y = p.y;
 
             WorldPosition = pos;
+        }
+
+        public override void Save(ref MapData mapdata)
+        {
+            NormalObjectlData data = new NormalObjectlData();
+
+            data.ObjectType = ObjectName;
+
+            data.PositionX = (int)Position.x;
+            data.PositionY = (int)Position.y;
+            data.Width = (int)Size.x;
+            data.Height = (int)Size.y;
+
+            mapdata.NormalObjectList.Add(data);
         }
     }
 }

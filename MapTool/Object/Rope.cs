@@ -19,8 +19,6 @@ namespace MapTool
         bool m_IsHitboxClick = false;
         bool m_IsMoved = false;
 
-        Vector2[] m_GroundPoint;
-
         double m_LineAngle;
 
         public Rope()
@@ -42,11 +40,6 @@ namespace MapTool
             m_LineAngle = 0;
 
             Judge = new ObjectJudge(this, ObjectName, m_LineHitImage.Position.x);
-
-            m_GroundPoint = new Vector2[5];
-
-            for (int i = 0; i < m_GroundPoint.Length; i++)
-                m_GroundPoint[i] = new Vector2();
         }
 
         public Rope(RopeObjectData data)
@@ -71,10 +64,6 @@ namespace MapTool
             Judge = new ObjectJudge(this, ObjectName, m_LineHitImage.Position.x);
 
             Position = new Vector2(data.PositionX, data.PositionY);
-
-            m_GroundPoint = new Vector2[5];
-
-            DeleteGroundAtPoint();
         }
 
         public override void Draw(Graphics g)
@@ -128,25 +117,12 @@ namespace MapTool
                 m_LineImage.Angle = (float)Util.GetDegree(WorldPosition, p) - 90.0f;
                 m_LineImage.Size.y = (int)m_LineHitImage.Position.Length;
 
-                Judge.m_DeltaPosX = Position.x - m_LineHitImage.Position.x;
+                Judge.m_DeltaPosX = m_LineHitImage.Position.x;
             }
         }
 
         public override void MouseUp(object sender, MouseEventArgs e)
         {
-            if (m_IsClick)
-            {
-                if (m_IsMoved)
-                {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        if (!m_GroundPoint[i].Equals(Point.Empty))
-                            Program.MainMap._Ground.CreateGroundAtPoint(m_GroundPoint[i]);
-                    }
-                }
-
-                DeleteGroundAtPoint();
-            }
             m_IsClick = m_IsHitboxClick = false;
         }
 
@@ -168,30 +144,6 @@ namespace MapTool
         public override void Release()
         {
             base.Release();
-
-            for (int i = 0; i < 5; i++)
-            {
-                if (!m_GroundPoint[i].Equals(Point.Empty))
-                    Program.MainMap._Ground.CreateGroundAtPoint(m_GroundPoint[i]);
-            }
-        }
-
-        void DeleteGroundAtPoint()
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                Vector2 gp = new Vector2(Position.x + (i - 2) * Program.MainMap.LineInterval.x, 660);
-                if (gp.x < 0 || gp.x > Program.MainMap.Size.x)
-                    continue;
-
-                if (Program.MainMap._Ground.list[Program.MainMap._Ground.getGroundIndex(gp)] != null)
-                {
-                    Program.MainMap._Ground.DeleteGroundAtPoint(gp);
-                    m_GroundPoint[i] = gp;
-                }
-                else
-                    m_GroundPoint[i] = new Vector2();
-            }
         }
 
         public override void ChangeImage(Bitmap bit)

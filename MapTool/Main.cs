@@ -5,13 +5,13 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using System.IO;
+using System.Threading;
 
 namespace MapTool
 {
     public partial class Main : Form
     {
         Option m_BPMOption;
-        Timer m_DrawTimer;
         FileManager m_FileManager;
 
         public DoubleBufferPanel ObjectPanel
@@ -21,10 +21,10 @@ namespace MapTool
 
         public Main()
         {
-            m_DrawTimer = new Timer();
-            m_DrawTimer.Interval = 10;
+            /*m_DrawTimer = new Timer();
+            m_DrawTimer.Interval = 1000;
             m_DrawTimer.Tick += new EventHandler(TimerEvent);
-            m_DrawTimer.Start();
+            m_DrawTimer.Start();*/
 
             m_FileManager = new FileManager(Application.StartupPath);
 
@@ -49,20 +49,6 @@ namespace MapTool
         private void TimerEvent(object sender, EventArgs e)
         {
             panel1.Invalidate();
-        }
-
-        private void Btn_Load_Click(object sender, EventArgs e)
-        {
-            DirectoryInfo dirInfo = new DirectoryInfo(".\\theme");
-            List<string> itemList = new List<string>();
-
-            foreach(var item in dirInfo.GetDirectories())
-            {
-                itemList.Add(item.Name);
-            }
-
-            SelectTheme selectTheme = new SelectTheme(itemList);
-            selectTheme.ShowDialog();
         }
 
         private void Btn_GroundDelete_Click(object sender, EventArgs e)
@@ -228,7 +214,7 @@ namespace MapTool
 
         private void 미리보기ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //SoundManager.PlayBackground();
+            SoundManager.PlayBackground();
             panel1.StartPreview();
         }
 
@@ -258,6 +244,7 @@ namespace MapTool
 
         private void 미리보기정지ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SoundManager.StopBackground();
             panel1.StopPreview();
         }
 
@@ -304,6 +291,28 @@ namespace MapTool
         {
             var bitmap = OpenObjectImageDialog();
             ImageManager.ChangeBitmap("ground", bitmap);
+        }
+
+        private void LoadTheme_Click(object sender, EventArgs e)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(".\\theme");
+            List<string> itemList = new List<string>();
+
+            foreach (var item in dirInfo.GetDirectories())
+            {
+                itemList.Add(item.Name);
+            }
+
+            SelectTheme selectTheme = new SelectTheme(itemList, ()=>
+            {
+                Btn_Platform.Image = ImageManager.GetBitmap("platform");
+                Btn_Niddle.Image = ImageManager.GetBitmap("niddle");
+                Btn_DJump.Image = ImageManager.GetBitmap("double");
+                Btn_Fever.Image = ImageManager.GetBitmap("fever");
+                Btn_Rope.Image = ImageManager.GetBitmap("rope");
+                Btn_Spring.Image = ImageManager.GetBitmap("spring");
+            });
+            selectTheme.ShowDialog();
         }
     }
 }

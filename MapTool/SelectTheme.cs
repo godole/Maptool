@@ -12,8 +12,12 @@ namespace MapTool
 {
     public partial class SelectTheme : Form
     {
+        public delegate void SelectThemeCallback();
+
         List<string> _ThemeList;
-        public SelectTheme(List<string> themeList)
+        SelectThemeCallback _Callback;
+
+        public SelectTheme(List<string> themeList, SelectThemeCallback callback)
         {
             InitializeComponent();
 
@@ -21,6 +25,8 @@ namespace MapTool
 
             foreach (var item in _ThemeList)
                 comboBox1.Items.Add(item);
+
+            _Callback = new SelectThemeCallback(callback);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)

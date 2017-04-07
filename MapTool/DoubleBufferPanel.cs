@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -41,6 +42,7 @@ namespace MapTool
             m_ScrollBar.ScrollMoveCallback += (float percent) =>
             {
                 m_Map.Position.x = -m_ScrollBar.Percent * m_Map.Size.x;
+                Invalidate();
             };
             m_PanelResizeDelegate = new PanelResize(m_ScrollBar.PanelResize);
 
@@ -51,6 +53,8 @@ namespace MapTool
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            UpdateManager.Instance.Update();
+
             Graphics g = e.Graphics;
             m_Map.Position.y = AutoScrollPosition.Y;
 
@@ -74,8 +78,6 @@ namespace MapTool
 
             if (m_Preview.IsPlay)
             {
-                m_Preview.PreviewUpdate();
-
                 int x = (int)(m_Preview.LineX + m_Map.Position.x);
                 g.DrawLine(new Pen(Color.Black), new Point(x, 0), new Point(x, Size.Height));
 
@@ -98,10 +100,15 @@ namespace MapTool
             {
                 bool isClicked = false;
 
+                m_ScrollBar.ScrollBarMouseDown(this, e);
+
+                isClicked = m_ScrollBar.IsClicked;
+
                 if (m_IsGroundDeleteState)
                 {
                     m_Map._Ground.DeleteGroundAtPoint(e.Location - m_Map.Position);
                     isClicked = true;
+                    Invalidate();
                 }
 
                 else
@@ -118,8 +125,8 @@ namespace MapTool
                         }
                     }
                 }
-
-                if(!isClicked)
+                
+                if (!isClicked)
                 {
                     _CurSlideLine = new SlideLine();
                     _Map.AddChild(_CurSlideLine);
@@ -136,26 +143,38 @@ namespace MapTool
                     if (ObjectContainer.ObjectList[i].BoundingBox.Contains((Point)(e.Location - m_Map.Position)))
                     {
                         ObjectContainer.ObjectList[i].Release();
+                        Invalidate();
+                        break;
                     }
                 }
 
                 for (int i = 0; i < _SlideLineList.Count; i++)
                 {
                     if (_SlideLineList[i].ContainsPoint(new Vector2(e.Location)))
+                    {
                         _SlideLineList.RemoveAt(i);
+                        Invalidate();
+                        break;
+                    }
                 }
             }
 
-            m_ScrollBar.ScrollBarMouseDown(this, e);
+            
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
             if (m_Object != null)
+            {
                 m_Object.MouseMove(this, e);
+                Invalidate();
+            }
 
             else if (_IsDrawingSlideLine)
+            {
                 _CurSlideLine.EndPosition = new Vector2(e.Location);
+                Invalidate();
+            }
 
             m_ScrollBar.ScrollBarMouseMove(this, e);
         }
@@ -181,7 +200,7 @@ namespace MapTool
         {
             m_IsGroundDeleteState = !m_IsGroundDeleteState;
         }
-
+        
         public void StartPreview()
         {
             List<BaseObject> objlist = ObjectContainer.ObjectList;
@@ -205,7 +224,6 @@ namespace MapTool
         public void StopPreview()
         {
             m_Preview.Stop();
-            SoundManager.StopBackground();
             m_Map.Position.x = 0;
         }
 
@@ -226,6 +244,7 @@ namespace MapTool
 
                 ObjectContainer.ObjectList.Add(obj);
             }
+            Invalidate();
 
             return obj;
         }
@@ -246,17 +265,22 @@ namespace MapTool
                 ObjectContainer.ObjectList.Add(obj);
                 m_Map.AddChild(obj);
             }
+            Invalidate();
         }
 
         public void ChangeObjectImage(string objectname, Bitmap bit)
         {
             if (m_ImageChange.ContainsKey(objectname))
                 m_ImageChange[objectname](bit);
+
+            Invalidate();
         }
 
         protected override void OnResize(EventArgs eventargs)
         {
             m_PanelResizeDelegate(Size);
+
+            Invalidate();
         }
     }
 }

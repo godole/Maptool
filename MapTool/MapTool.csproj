@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Cutscene.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="IUpdate.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Object\Double.cs" />
     <Compile Include="DoubleBufferPanel.cs">
@@ -102,6 +103,7 @@
     <Compile Include="Object\ObjectJudge.cs" />
     <Compile Include="Object\Rope.cs" />
     <Compile Include="Object\Spring.cs" />
+    <Compile Include="Object\TiledObject.cs" />
     <Compile Include="Option.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,9 +128,10 @@
       <DependentUpon>SelectTheme.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.Designer.cs" />
-    <Compile Include="SlideLine.cs" />
+    <Compile Include="Object\SlideLine.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Time.cs" />
+    <Compile Include="UpdateManager.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="FrameWork\Vector2.cs" />
     <EmbeddedResource Include="Main.resx">

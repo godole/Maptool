@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace MapTool
 {
-    public class Node
+    public class Node :
+        IUpdate
     {
         List<Node> m_Children;
         Node m_Parent = null;
@@ -26,14 +27,13 @@ namespace MapTool
             set
             {
                 m_Position = value;
-                UpdateMatrix();
             }
         }
         public Vector2 WorldPosition
         {
             get
             {
-                return new Vector2(m_WorldMatrix.OffsetX, m_WorldMatrix.OffsetY);
+                return new Vector2(WorldMatrix.OffsetX, WorldMatrix.OffsetY);
             }
             set
             {
@@ -63,12 +63,11 @@ namespace MapTool
             {
                 if (Parent == null)
                     return LocalMatrix;
-
-                UpdateMatrix();
+                
                 return m_WorldMatrix;
             }
         }
-        public Matrix LocalMatrix { get { UpdateMatrix(); return m_LocalMatrix; } }
+        public Matrix LocalMatrix { get { return m_LocalMatrix; } }
 
         public Node()
         {
@@ -78,14 +77,19 @@ namespace MapTool
             Scale = new Vector2(1.0, 1.0);
             Size = new Vector2();
             m_LocalMatrix = new Matrix();
-            UpdateMatrix();
+            m_WorldMatrix = new Matrix();
+            UpdateManager.Instance.AddObject(this);
+        }
+
+        public void Release()
+        {
+            UpdateManager.Instance.RemoveObject(this);
         }
 
         public void AddChild(Node node)
         {
             m_Children.Add(node);
             node.m_Parent = this;
-            node.UpdateMatrix();
         }
 
         public void RemoveChild(Node node)
@@ -99,7 +103,6 @@ namespace MapTool
             set
             {
                 m_Angle = value;
-                UpdateMatrix();
             }
         }
 
@@ -154,6 +157,11 @@ namespace MapTool
                 m_WorldMatrix.Multiply(Parent.WorldMatrix);
 
             m_WorldMatrix.Multiply(m_LocalMatrix);
+        }
+
+        public void Update()
+        {
+            UpdateMatrix();
         }
 
         public Vector2 LeftTop

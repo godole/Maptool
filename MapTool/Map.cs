@@ -42,7 +42,7 @@ namespace MapTool
             m_MapTime = mapTime;
             m_LineInterval = new Vector2();
 
-            Update();
+            UpdateData();
 
             m_Ground = new Ground((int)Size.x / (int)m_LineInterval.x);
             m_Ground.NodeSize = new Vector2(m_LineInterval.x, 100);
@@ -87,9 +87,9 @@ namespace MapTool
             DrawHorizonSnapLine(g);
         }
 
-        void Update()
+        void UpdateData()
         {
-            m_PlayerMoveSpeed = Math.Pow((m_BPM / 60.0f), 2.0f) * 200;
+            m_PlayerMoveSpeed = Math.Pow((m_BPM / 60.0f), 2.0f) * 150;
             m_LineInterval = new Vector2(60.0 / m_BPM * PlayerMoveSpeed, 155);
             Size = new Vector2(m_BPM / 60.0f * m_MapTime * 4 * LineInterval.x, 720);
         }
@@ -101,8 +101,8 @@ namespace MapTool
             HighPen.DashStyle = DashStyle.Solid;
             NormalPen.DashStyle = DashStyle.Dash;
 
-            int startX = (int)(Position.x);
-            int count = 0;
+            int startX = (int)(Position.x - (int)(Position.x) / (int)(LineInterval.x) * LineInterval.x);
+            int count = -(int)(Position.x) / (int)(LineInterval.x);
             int highlight = 0;
 
             switch (m_BitMode)
@@ -156,7 +156,7 @@ namespace MapTool
             m_BPM = data.BPM;
             m_MapTime = data.MapLength;
 
-            Update();
+            UpdateData();
 
             m_Ground.NodeSize = new Vector2(m_LineInterval.x, 100);
             AddChild(m_Ground);
